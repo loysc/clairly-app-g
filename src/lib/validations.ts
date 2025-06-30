@@ -1,0 +1,1 @@
+// Validation schemas placeholder - will be added as needed
