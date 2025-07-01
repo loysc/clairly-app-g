@@ -13,7 +13,7 @@ This document outlines the development tasks required to achieve the Minimum Via
   - [x] 1.1.4: Implement & Enable Supabase Row Level Security (RLS) policies.
 - [x] **1.2: Onboarding Flow**
   - [x] 1.2.1: Create the initial role selection page at `/onboarding/role`.
-  - [x] 1.2.2: Implement the server action to update Clerk metadata and programmatically create a `tenant` record in Supabase upon role selection.
+  - [x] 1.2.2: Implement the server action to update Clerk metadata and programmatically create a `tenant` or `landlord` record in Supabase upon role selection.
   - [ ] **1.2.3: Implement Agency Onboarding Workflow (Multi-step UI)**
     - [x] 1.2.3.1: **Step 1: Agency Information & SIRET Lookup Page.** (Title: "Agency information", Input: "Company name or SIREN/SIRET number", Buttons: "Search", "Back").
     - [x] 1.2.3.2: **Step 2: Agency Confirmation Page.** (Title: "Agency information", Display API result card, Buttons: "Enter my details manually", "Back").

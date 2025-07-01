@@ -45,6 +45,21 @@ export async function updateUserRole(role: string) {
     }
     redirect('/tenant/dashboard')
   } else if (role === 'landlord') {
+    try {
+      const { error } = await supabase.from('landlords').insert({
+        id: sessionClaims.sub,
+        first_name: firstName,
+        last_name: lastName,
+        email: email,
+      })
+
+      if (error) {
+        console.error('Supabase error:', error)
+        console.log('Continuing to dashboard despite DB error...')
+      }
+    } catch (dbError) {
+      console.error('Database connection error:', dbError)
+    }
     redirect('/landlord/dashboard')
   } else if (role === 'agency') {
     redirect('/agency/dashboard')
