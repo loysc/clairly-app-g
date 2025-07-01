@@ -19,6 +19,8 @@ import {
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { lookupSiret } from '@/lib/api/insee'
+import { saveAgencyOnboardingData } from '@/app/agency/actions'
+import { AgencyData } from '@/components/agency/onboarding-context'
 
 const siretSearchSchema = z.object({
   siretNumber: z.string()
@@ -29,7 +31,7 @@ const siretSearchSchema = z.object({
 
 export default function SiretSearchPage() {
   const [isPending, startTransition] = useTransition()
-  const { goToNextStep } = useOnboarding()
+  const { goToNextStep, setAgencyData } = useOnboarding()
   const router = useRouter()
 
   const form = useForm<z.infer<typeof siretSearchSchema>>({
@@ -50,10 +52,24 @@ export default function SiretSearchPage() {
       }
 
       if (data) {
-        setAgencyData(data) // Store the INSEE data in context
-        goToNextStep() // Navigate to confirm-address page
+        const agencyDataToSave: AgencyData = {
+          siretNumber: data.siret,
+          companyName: data.denominationUniteLegale,
+          address: `${data.adresseEtablissement.numeroVoie} ${data.adresseEtablissement.typeVoie} ${data.adresseEtablissement.libelleVoie}`,
+          zipCode: data.adresseEtablissement.codePostal,
+          city: data.adresseEtablissement.libelleCommune,
+        };
+
+        setAgencyData(agencyDataToSave); // Store the INSEE data in context
+
+        try {
+          await saveAgencyOnboardingData(agencyDataToSave);
+          goToNextStep(); // Navigate to confirm-address page
+        } catch (saveError: any) {
+          form.setError('siretNumber', { message: saveError.message || 'Failed to save agency data.' });
+        }
       } else {
-        form.setError('siretNumber', { message: 'No company found for this SIRET/SIREN.' })
+        form.setError('siretNumber', { message: 'No company found for this SIRET/SIREN.' });
       }
     })
   }

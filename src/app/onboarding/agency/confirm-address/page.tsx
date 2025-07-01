@@ -2,13 +2,14 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import { useOnboarding } from '@/components/agency/onboarding-context'
+import { useOnboarding, AgencyData } from '@/components/agency/onboarding-context'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { saveAgencyOnboardingData } from '@/app/agency/actions'
 
 export default function ConfirmAddressPage() {
   const [isPending, startTransition] = useTransition()
-  const { goToNextStep, goToPreviousStep } = useOnboarding()
+  const { goToNextStep, goToPreviousStep, agencyData } = useOnboarding()
   const router = useRouter()
 
   // Simulate API result for now
@@ -20,12 +21,16 @@ export default function ConfirmAddressPage() {
     city: 'LYON',
   }
 
-  const handleConfirm = () => {
-    startTransition(() => {
-      // In a real scenario, this would store the confirmed agency data
-      console.log('Agency confirmed:', agencyData)
-      goToNextStep()
-    })
+  const handleConfirm = async () => {
+    startTransition(async () => {
+      try {
+        await saveAgencyOnboardingData(agencyData);
+        goToNextStep();
+      } catch (error) {
+        console.error("Failed to save agency data:", error);
+        alert("Failed to save agency data. Please try again.");
+      }
+    });
   }
 
   const handleManualEntry = () => {
@@ -55,7 +60,7 @@ export default function ConfirmAddressPage() {
             >
               <CardContent className="py-4">
                 <p className="font-semibold">{agencyData.companyName} - {agencyData.siretNumber}</p>
-                <p className="text-sm text-muted-foreground">{agencyData.address} - {agencyData.zipCode} {agencyData.city}</p>
+            <p className="text-sm text-muted-foreground">{agencyData.address} - {agencyData.zipCode} {agencyData.city}</p>
               </CardContent>
             </Card>
             <p className="text-sm text-muted-foreground mt-2">

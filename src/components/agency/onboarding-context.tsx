@@ -3,12 +3,29 @@
 import { createContext, useContext, useState, ReactNode, useCallback } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 
+interface AgencyData {
+  companyName?: string;
+  siretNumber?: string;
+  address?: string;
+  additionalAddressDetails?: string;
+  zipCode?: string;
+  city?: string;
+  legalName?: string;
+  legalForms?: string[];
+  siretSirenNumber?: string;
+  registrationDate?: string;
+  proofOfRegistrationUrl?: string;
+  rentalSoftware?: string;
+  otherRentalSoftware?: string;
+  unitsManaged?: string;
+}
+
 interface OnboardingContextType {
   currentStep: number;
   goToNextStep: () => void;
   goToPreviousStep: () => void;
-  agencyData: any; // TODO: Define a proper type for agency data
-  setAgencyData: (data: any) => void;
+  agencyData: AgencyData;
+  setAgencyData: React.Dispatch<React.SetStateAction<AgencyData>>;
 }
 
 const OnboardingContext = createContext<OnboardingContextType | undefined>(undefined);
@@ -22,7 +39,7 @@ export function OnboardingProvider({ children, steps }: OnboardingProviderProps)
   const router = useRouter();
   const pathname = usePathname();
   const [currentStepIndex, setCurrentStepIndex] = useState(() => steps.indexOf(pathname));
-  const [agencyData, setAgencyData] = useState<any>({}); // State to store agency data
+  const [agencyData, setAgencyData] = useState<AgencyData>({}); // State to store agency data
 
   const goToNextStep = useCallback(() => {
     const nextIndex = currentStepIndex + 1;

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { useOnboarding } from '@/components/agency/onboarding-context'
+import { useOnboarding, AgencyData } from '@/components/agency/onboarding-context'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { saveAgencyOnboardingData } from '@/app/agency/actions'
 
 const addressSchema = z.object({
   address: z.string().min(5, {
@@ -33,24 +34,37 @@ const addressSchema = z.object({
 
 export default function ManualAddressPage() {
   const [isPending, startTransition] = useTransition()
-  const { goToNextStep, goToPreviousStep } = useOnboarding()
+  const { goToNextStep, goToPreviousStep, agencyData, setAgencyData } = useOnboarding()
 
   const form = useForm<z.infer<typeof addressSchema>>({
     resolver: zodResolver(addressSchema),
     defaultValues: {
-      address: '',
-      additionalAddressDetails: '',
-      zipCode: '',
-      city: '',
+      address: agencyData.address || '',
+      additionalAddressDetails: agencyData.additionalAddressDetails || '',
+      zipCode: agencyData.zipCode || '',
+      city: agencyData.city || '',
     },
   })
 
   async function onSubmit(values: z.infer<typeof addressSchema>) {
     startTransition(async () => {
       console.log('Manual address submitted:', values)
-      // TODO: Save address data to database (Task 1.2.4.3)
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      goToNextStep() // Next step in manual path
+      const updatedAgencyData = {
+        ...agencyData,
+        address: values.address,
+        additionalAddressDetails: values.additionalAddressDetails,
+        zipCode: values.zipCode,
+        city: values.city,
+      };
+      setAgencyData(updatedAgencyData);
+
+      try {
+        await saveAgencyOnboardingData(updatedAgencyData);
+        goToNextStep();
+      } catch (error: any) {
+        console.error("Failed to save manual address data:", error);
+        alert(`Failed to save manual address data: ${error.message || "An unexpected error occurred."}`);
+      }
     })
   }
 

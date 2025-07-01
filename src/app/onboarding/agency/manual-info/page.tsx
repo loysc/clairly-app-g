@@ -19,6 +19,8 @@ import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox' // Assuming you have a Checkbox component
 import { UploadDropzone } from '@/utils/uploadthing'
+import { saveAgencyOnboardingData } from '@/app/agency/actions'
+import { AgencyData } from '@/components/agency/onboarding-context'
 
 const legalFormOptions = [
   { id: 'sas', label: 'SAS' },
@@ -49,7 +51,7 @@ const manualInfoSchema = z.object({
 
 export default function ManualAgencyInfoPage() {
   const [isPending, startTransition] = useTransition()
-  const { goToNextStep, goToPreviousStep } = useOnboarding()
+  const { goToNextStep, goToPreviousStep, agencyData, setAgencyData } = useOnboarding()
 
   const form = useForm<z.infer<typeof manualInfoSchema>>({
     resolver: zodResolver(manualInfoSchema),
@@ -64,10 +66,23 @@ export default function ManualAgencyInfoPage() {
   async function onSubmit(values: z.infer<typeof manualInfoSchema>) {
     startTransition(async () => {
       console.log('Manual agency info submitted:', values)
-      // TODO: Save data to database (Task 1.2.4.3)
-      // TODO: Handle file upload (Task 1.2.4.2)
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      goToNextStep() // Next step in manual path
+      const updatedAgencyData: AgencyData = {
+        ...agencyData,
+        legalName: values.legalName,
+        legalForms: values.legalForms,
+        siretSirenNumber: values.siretSirenNumber,
+        registrationDate: values.registrationDate,
+        proofOfRegistrationUrl: values.proofOfRegistration?.url, // Assuming UploadThing returns a URL
+      };
+      setAgencyData(updatedAgencyData);
+
+      try {
+        await saveAgencyOnboardingData(updatedAgencyData);
+        goToNextStep();
+      } catch (error: any) {
+        console.error("Failed to save manual agency info:", error);
+        alert(`Failed to save manual agency info: ${error.message || "An unexpected error occurred."}`);
+      }
     })
   }
 

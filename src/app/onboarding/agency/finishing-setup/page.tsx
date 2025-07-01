@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { redirect } from 'next/navigation'
-import { useOnboarding } from '@/components/agency/onboarding-context'
+import { useOnboarding, AgencyData } from '@/components/agency/onboarding-context'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -20,6 +20,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group' // Assuming you have a RadioGroup component
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select' // Assuming you have a Select component
 import { Input } from '@/components/ui/input'
+import { saveAgencyOnboardingData } from '@/app/agency/actions'
 
 const rentalSoftwareOptions = [
   { label: 'Sweepbright', value: 'sweepbright' },
@@ -50,7 +51,7 @@ const finishingSetupSchema = z.object({
 
 export default function FinishingSetupPage() {
   const [isPending, startTransition] = useTransition()
-  const { goToPreviousStep } = useOnboarding()
+  const { goToPreviousStep, agencyData, setAgencyData } = useOnboarding()
   const router = useRouter()
 
   const form = useForm<z.infer<typeof finishingSetupSchema>>({
@@ -66,9 +67,21 @@ export default function FinishingSetupPage() {
   async function onSubmit(values: z.infer<typeof finishingSetupSchema>) {
     startTransition(async () => {
       console.log('Finishing setup data:', values)
-      // TODO: Save data to database (Task 1.2.4.3)
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      redirect('/agency/dashboard') // Redirect to agency dashboard
+      const updatedAgencyData = {
+        ...agencyData,
+        rentalSoftware: values.rentalSoftware,
+        otherRentalSoftware: values.otherRentalSoftware,
+        unitsManaged: values.unitsManaged,
+      };
+      setAgencyData(updatedAgencyData);
+
+      try {
+        await saveAgencyOnboardingData(updatedAgencyData);
+        redirect('/agency/dashboard'); // Redirect to agency dashboard after final save
+      } catch (error: any) {
+        console.error("Failed to save finishing setup data:", error);
+        alert(`Failed to save finishing setup data: ${error.message || "An unexpected error occurred."}`);
+      }
     })
   }
 
