@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { useRouter } from 'next/navigation'
+import { redirect } from 'next/navigation'
+import { useOnboarding } from '@/components/agency/onboarding-context'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -49,6 +50,7 @@ const finishingSetupSchema = z.object({
 
 export default function FinishingSetupPage() {
   const [isPending, startTransition] = useTransition()
+  const { goToPreviousStep } = useOnboarding()
   const router = useRouter()
 
   const form = useForm<z.infer<typeof finishingSetupSchema>>({
@@ -66,7 +68,7 @@ export default function FinishingSetupPage() {
       console.log('Finishing setup data:', values)
       // TODO: Save data to database (Task 1.2.4.3)
       await new Promise(resolve => setTimeout(resolve, 1500))
-      router.push('/agency/dashboard') // Redirect to agency dashboard
+      redirect('/agency/dashboard') // Redirect to agency dashboard
     })
   }
 

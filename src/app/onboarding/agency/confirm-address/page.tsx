@@ -2,11 +2,13 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
+import { useOnboarding } from '@/components/agency/onboarding-context'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 
 export default function ConfirmAddressPage() {
   const [isPending, startTransition] = useTransition()
+  const { goToNextStep, goToPreviousStep } = useOnboarding()
   const router = useRouter()
 
   // Simulate API result for now
@@ -22,7 +24,7 @@ export default function ConfirmAddressPage() {
     startTransition(() => {
       // In a real scenario, this would store the confirmed agency data
       console.log('Agency confirmed:', agencyData)
-      router.push('/onboarding/agency/address-confirmation') // Next step in pre-filled path
+      goToNextStep()
     })
   }
 

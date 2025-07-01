@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { useRouter } from 'next/navigation'
+import { useOnboarding } from '@/components/agency/onboarding-context'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -48,7 +48,7 @@ const manualInfoSchema = z.object({
 
 export default function ManualAgencyInfoPage() {
   const [isPending, startTransition] = useTransition()
-  const router = useRouter()
+  const { goToNextStep, goToPreviousStep } = useOnboarding()
 
   const form = useForm<z.infer<typeof manualInfoSchema>>({
     resolver: zodResolver(manualInfoSchema),
@@ -66,7 +66,7 @@ export default function ManualAgencyInfoPage() {
       // TODO: Save data to database (Task 1.2.4.3)
       // TODO: Handle file upload (Task 1.2.4.2)
       await new Promise(resolve => setTimeout(resolve, 1500))
-      router.push('/onboarding/agency/manual-address') // Next step in manual path
+      goToNextStep() // Next step in manual path
     })
   }
 
