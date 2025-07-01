@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { lookupSiret } from '@/lib/api/insee'
 
 const siretSearchSchema = z.object({
   siretNumber: z.string()
@@ -41,10 +42,19 @@ export default function SiretSearchPage() {
   async function onSubmit(values: z.infer<typeof siretSearchSchema>) {
     startTransition(async () => {
       console.log('Searching SIREN/SIRET:', values.siretNumber)
-      // TODO: Implement INSEE API call (Task 1.2.4.1)
-      // For now, simulate success and redirect to a placeholder page
-      await new Promise(resolve => setTimeout(resolve, 1500))
-      goToNextStep()
+      const { data, error } = await lookupSiret(values.siretNumber)
+
+      if (error) {
+        form.setError('siretNumber', { message: error })
+        return
+      }
+
+      if (data) {
+        setAgencyData(data) // Store the INSEE data in context
+        goToNextStep() // Navigate to confirm-address page
+      } else {
+        form.setError('siretNumber', { message: 'No company found for this SIRET/SIREN.' })
+      }
     })
   }
 

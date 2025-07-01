@@ -23,7 +23,7 @@ This document outlines the development tasks required to achieve the Minimum Via
     - [x] 1.2.3.6: Build the "Finishing Setup" page (Rental Software dropdown: Sweepbright, Hecktor, AC3, Other; Units Managed radio buttons: 10-100, 100-300, 300+).
     - [x] 1.2.3.7: Implement multi-step form navigation and state management across these pages.
   - [ ] **1.2.4: Integrate INSEE API & Persist Agency Data**
-    - [ ] 1.2.4.1: Create server action to call INSEE API for SIRET/SIREN lookup.
+    - [x] 1.2.4.1: Create server action to call INSEE API for SIRET/SIREN lookup.
     - [ ] 1.2.4.2: Implement secure file upload for "Proof of Registration" using UploadThing.
     - [ ] 1.2.4.3: Create server actions to save agency data from each step to the Supabase `agencies` table.
     - [ ] 1.2.4.4: Update `agencies` table schema to include new fields (legal form, registration date, rental software, units managed).

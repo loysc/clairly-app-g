@@ -7,7 +7,8 @@ interface OnboardingContextType {
   currentStep: number;
   goToNextStep: () => void;
   goToPreviousStep: () => void;
-  // Add state for collected form data here later
+  agencyData: any; // TODO: Define a proper type for agency data
+  setAgencyData: (data: any) => void;
 }
 
 const OnboardingContext = createContext<OnboardingContextType | undefined>(undefined);
@@ -21,6 +22,7 @@ export function OnboardingProvider({ children, steps }: OnboardingProviderProps)
   const router = useRouter();
   const pathname = usePathname();
   const [currentStepIndex, setCurrentStepIndex] = useState(() => steps.indexOf(pathname));
+  const [agencyData, setAgencyData] = useState<any>({}); // State to store agency data
 
   const goToNextStep = useCallback(() => {
     const nextIndex = currentStepIndex + 1;
@@ -42,6 +44,8 @@ export function OnboardingProvider({ children, steps }: OnboardingProviderProps)
     currentStep: currentStepIndex + 1, // 1-based for display
     goToNextStep,
     goToPreviousStep,
+    agencyData,
+    setAgencyData,
   };
 
   return (
