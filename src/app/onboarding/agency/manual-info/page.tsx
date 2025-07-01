@@ -71,7 +71,7 @@ export default function ManualAgencyInfoPage() {
   }
 
   const handleBack = () => {
-    router.back()
+    goToPreviousStep()
   }
 
   return (

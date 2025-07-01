@@ -55,7 +55,7 @@ export default function ManualAddressPage() {
   }
 
   const handleBack = () => {
-    router.back()
+    goToPreviousStep()
   }
 
   return (

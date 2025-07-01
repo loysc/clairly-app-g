@@ -73,7 +73,7 @@ export default function FinishingSetupPage() {
   }
 
   const handleBack = () => {
-    router.back()
+    goToPreviousStep()
   }
 
   return (
