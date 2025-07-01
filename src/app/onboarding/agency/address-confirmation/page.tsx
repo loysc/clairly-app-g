@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useTransition } from 'react'
-import { useRouter } from 'next/navigation'
+import { useOnboarding } from '@/components/agency/onboarding-context'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
@@ -33,7 +33,7 @@ const addressSchema = z.object({
 
 export default function AddressConfirmationPage() {
   const [isPending, startTransition] = useTransition()
-  const router = useRouter()
+  const { goToNextStep, goToPreviousStep } = useOnboarding()
 
   // Simulate pre-filled data (will come from API or previous manual step)
   const prefilledData = {
@@ -53,12 +53,12 @@ export default function AddressConfirmationPage() {
       console.log('Confirmed address:', values)
       // TODO: Save address data to database (Task 1.2.4.3)
       await new Promise(resolve => setTimeout(resolve, 1500))
-      router.push('/onboarding/agency/finishing-setup') // Next step
+      goToNextStep()
     })
   }
 
   const handleBack = () => {
-    router.back()
+    goToPreviousStep()
   }
 
   return (
