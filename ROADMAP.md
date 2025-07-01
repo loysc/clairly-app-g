@@ -32,8 +32,8 @@ This document outlines the development tasks required to achieve the Minimum Via
 
 ### Phase 2: Tenant & Landlord Core Features
 
-- [ ] **2.1: Tenant Document Management**
-  - [ ] 2.1.1: Configure secure file storage (e.g., AWS S3).
+- [x] **2.1: Tenant Document Management**
+  - [x] 2.1.1: Configure secure file storage (e.g., AWS S3).
   - [ ] 2.1.2: Implement the DossierFacile Connect flow (OAuth) for tenants to import their verified dossier.
   - [ ] 2.1.3: Build the manual dossier creation flow with file uploads.
   - [ ] 2.1.4: Ensure all documents (imported or uploaded) are securely linked to the tenant's user ID.
