@@ -437,12 +437,16 @@ clairly/
 | DossierFacile Connect | [https://partenaire.dossierfacile.logement.gouv.fr/documentation-technique/dossierfacile-connect](https://partenaire.dossierfacile.logement.gouv.fr/documentation-technique/dossierfacile-connect) |
 | Tink API              | [https://docs.tink.com](https://docs.tink.com)                                                                                                                                                     |
 | INSEE SIRET API       | [https://portail-api.insee.fr/catalog/api/2ba0e549-5587-3ef1-9082-99cd865de66f/doc](https://portail-api.insee.fr/catalog/api/2ba0e549-5587-3ef1-9082-99cd865de66f/doc)                             |
-                                                                                                                                           |
+
+### Environment Variables to Configure (DossierFacile)
+
+- `DOSSIER_FACILE_CLIENT_ID`: Your DossierFacile client ID.
+- `DOSSIER_FACILE_CLIENT_SECRET`: Your DossierFacile client secret.
+- `DOSSIER_FACILE_REDIRECT_URI`: The URI where DossierFacile will redirect after authentication (e.g., `http://localhost:3000/api/dossierfacile/callback`).
+
+### Clerk & Supabase Integration Note
+
+For Supabase Row Level Security (RLS) to function correctly with Clerk authentication in server-side contexts (e.g., server actions), ensure your Clerk instance is configured to provide session tokens that Supabase can use for RLS. When initializing the Supabase client in server actions, pass the Clerk session token as the `Authorization` header (e.g., `Authorization: Bearer ${await session?.getToken()}`). Refer to the official Supabase documentation for Clerk integration for detailed setup: [https://supabase.com/docs/guides/auth/third-party/clerk](https://supabase.com/docs/guides/auth/third-party/clerk)
 
 ---
 
-```
-
-```
-
-```
