@@ -16,7 +16,7 @@ This document outlines the development tasks required to achieve the Minimum Via
   - [x] 1.2.2: Implement the server action to update Clerk metadata and programmatically create a `tenant` record in Supabase upon role selection.
   - [ ] **1.2.3: Implement Agency Onboarding Workflow (Multi-step UI)**
     - [x] 1.2.3.1: **Step 1: Agency Information & SIRET Lookup Page.** (Title: "Agency information", Input: "Company name or SIREN/SIRET number", Buttons: "Search", "Back").
-    - [ ] 1.2.3.2: Implement UI to display INSEE API results for user selection.
+    - [ ] - [x] 1.2.3.2: **Step 2: Agency Confirmation Page.** (Title: "Agency information", Display API result card, Buttons: "Enter my details manually", "Back").
     - [ ] 1.2.3.3: Build the "Confirmation Agency Address" page (for pre-filled path).
     - [ ] 1.2.3.4: Build the "Manual Creation: Agency Information" page (Legal Name, Legal Form checkboxes: SAS, SARL, SASU, SIRET/SIREN, Registration Date (DD/MM/YYYY auto-format), Proof of Registration upload).
     - [ ] 1.2.3.5: Build the "Agency Address Form" page (for manual path: Address, Additional details, Zip code, City).
