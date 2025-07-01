@@ -18,7 +18,7 @@ This document outlines the development tasks required to achieve the Minimum Via
 - [x] **1.2: Onboarding Flow**
   - [x] 1.2.1: Create the initial role selection page at `/onboarding/role`.
   - [x] 1.2.2: Implement the server action to update Clerk metadata and programmatically create a `tenant` record in Supabase upon role selection.
-  - [ ] 1.2.3: Build the agency onboarding form with SIRET validation using the INSEE API.
+  - [x] 1.2.3: Build the agency onboarding form with SIRET validation using the INSEE API.
   - [ ] 1.2.4: Connect agency onboarding to the database to store verified company data.
 
 ---
