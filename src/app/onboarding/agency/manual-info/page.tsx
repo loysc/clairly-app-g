@@ -18,6 +18,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Checkbox } from '@/components/ui/checkbox' // Assuming you have a Checkbox component
+import { UploadDropzone } from '@/utils/uploadthing'
 
 const legalFormOptions = [
   { id: 'sas', label: 'SAS' },
@@ -179,6 +180,25 @@ export default function ManualAgencyInfoPage() {
                 )}
               />
               {/* TODO: File upload component for proofOfRegistration (Task 1.2.4.2) */}
+              <FormItem>
+                <FormLabel>Proof of Registration</FormLabel>
+                <FormControl>
+                  <UploadDropzone
+                    endpoint="proofOfRegistration"
+                    onClientUploadComplete={(res) => {
+                      // Do something with the response
+                      console.log("Files: ", res);
+                      // Store the file URL in the form state or context
+                      form.setValue('proofOfRegistration', res[0].url);
+                    }}
+                    onUploadError={(error: Error) => {
+                      // Do something with the error. 
+                      alert(`ERROR! ${error.message}`);
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
               <div className="flex gap-2">
                 <Button type="submit" className="flex-1" disabled={isPending}>
                   {isPending ? 'Continuing...' : 'Continue'}
