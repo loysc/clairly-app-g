@@ -20,7 +20,7 @@ This document outlines the development tasks required to achieve the Minimum Via
     - [x] 1.2.3.3: **Step 3: Address Confirmation Page.** (Title: "Agency address", Pre-filled Address, Additional details, Zip Code, City, Buttons: "Continue", "Back").
     - [x] 1.2.3.4: Build the "Manual Creation: Agency Information" page (Legal Name, Legal Form checkboxes: SAS, SARL, SASU, SIRET/SIREN, Registration Date (DD/MM/YYYY auto-format), Proof of Registration upload).
     - [x] 1.2.3.5: Build the "Agency Address Form" page (for manual path: Address, Additional details, Zip code, City).
-    - [ ] 1.2.3.6: Build the "Finishing Setup" page (Rental Software dropdown: Sweepbright, Hecktor, AC3, Other; Units Managed radio buttons: 10-100, 100-300, 300+).
+    - [x] 1.2.3.6: Build the "Finishing Setup" page (Rental Software dropdown: Sweepbright, Hecktor, AC3, Other; Units Managed radio buttons: 10-100, 100-300, 300+).
     - [ ] 1.2.3.7: Implement multi-step form navigation and state management across these pages.
   - [ ] **1.2.4: Integrate INSEE API & Persist Agency Data**
     - [ ] 1.2.4.1: Create server action to call INSEE API for SIRET/SIREN lookup.
